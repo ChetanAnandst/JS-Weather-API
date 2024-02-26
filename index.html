@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div class="card">
       <div class="search">
@@ -13,8 +14,72 @@
         <button><img src="./img/search01.png" alt="search" /></button>
       </div>
       <div class="weather">
-        <img src="./img/rain_4850297.png" alt="">
+        <img src="./img/rain_4850297.png" class="weather-icon" />
+        <h1 class="temp">19°C</h1>
+        <h2 class="city">Gurgaon</h2>
+        <div class="details">
+          <div class="col">
+            <img src="./img/dew_7334552.png" />
+            <div>
+              <p class="humidity">25%</p>
+              <p>Humidity</p>
+            </div>
+          </div>
+          <div class="col">
+            <img src="./img/wind_12093632.png" />
+            <div>
+              <p class="wind">15 km/h</p>
+              <p>Wind Speed</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <script>
+      const apiKey = "0a562b8a2f25e868bcc0010ac7b25e87";
+      const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+    
+      const searchBox = document.querySelector(".search input");
+      const searchBtn = document.querySelector(".search button");
+      const weatherIcon = document.querySelector(".weather-icon");
+    
+      function checkWeather(city) {
+        const url = `${apiUrl}${city}&appid=${apiKey}`;
+    
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+    
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+            document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+    
+            if (data.weather[0].main == "Wind") {
+              weatherIcon.src = "./img/wind_12093632.png";
+            } else if (data.weather[0].main == "Clear") {
+              weatherIcon.src = "./img/sun_1888282.png";
+            } else if (data.weather[0].main == "Rain") {
+              weatherIcon.src = "./img/rain_4850297.png";
+            } else if (data.weather[0].main == "Snow") {
+              weatherIcon.src = "./img/snowflake_9120718.png";
+            } else if (data.weather[0].main == "Drizzle") {
+              weatherIcon.src = "./img/dew_7334552.png";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching weather data:", error);
+          });
+      }
+    
+      searchBtn.addEventListener("click", () => {
+        checkWeather(searchBox.value);
+      });
+    
+      // Set the initial city name
+      checkWeather("Gurgaon");
+    </script>
   </body>
 </html>

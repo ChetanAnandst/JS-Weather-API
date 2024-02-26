@@ -81,3 +81,12 @@ body{
     font-size: 30px;
     margin-top: -6px;
 }
+
+.error{
+    text-align: left;
+    margin-left: 10px;
+    font-size: 24px;
+    margin-top: 10px;
+    display: none;
+    color: #000000;
+}
